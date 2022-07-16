@@ -7,15 +7,17 @@ pipeline {
       // Without cloud, Jenkins will pick the first cloud in the list
       cloud "kubernetes"
       label "jenkins-agent"
-    //   yamlFile "ms-go-crud/jenkins-build-pod.yaml"
     }
   }
 
   stages {
     stage("Build") {
       steps {
-        container("gcloud") {
+        dir("ms-go-crud") {
+          container("gcloud") {
+            // Cheat by using Cloud Build to help us build our container
             sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
+          }
         }
       }
     }
