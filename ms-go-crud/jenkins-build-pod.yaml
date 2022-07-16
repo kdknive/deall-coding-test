@@ -28,7 +28,6 @@ spec:
 
 ---
 
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jenkins-agent-data
