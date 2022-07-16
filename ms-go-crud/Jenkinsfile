@@ -13,11 +13,8 @@ pipeline {
   stages {
     stage("Build") {
       steps {
-        dir("ms-go-crud") {
-          container("gcloud") {
-            // Cheat by using Cloud Build to help us build our container
+        container("gcloud") {
             sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
-          }
         }
       }
     }
