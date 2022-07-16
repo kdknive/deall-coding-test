@@ -25,15 +25,3 @@ spec:
     volumeMounts: # Path dari directory yang akan digunakan dan di mount ke PV
       - name: jenkins-agent-data
         mountPath:  '/data'
-
----
-
-kind: PersistentVolumeClaim
-metadata:
-  name: jenkins-agent-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Gi
