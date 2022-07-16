@@ -1,0 +1,41 @@
+pipeline {
+  agent {
+    kubernetes {
+      // Without cloud, Jenkins will pick the first cloud in the list
+      cloud "kubernetes"
+      label "jenkins-agent"
+      yamlFile "jenkins-build-pod.yaml"
+    }
+  }
+
+  stages {
+    stage("Build") {
+      steps {
+        dir("hello-app") {
+          container("gcloud") {
+            // Cheat by using Cloud Build to help us build our container
+            sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
+          }
+        }
+      }
+    }
+    stage("Development") {
+      when {
+        branch 'develop'
+      }
+      environment {
+        IMAGE_REPO = "gcr.io/${project}/${appName}"
+        IMAGE_TAG = "${env.GIT_COMMIT.substring(0,7)}"
+      }
+      steps {
+        container("helm") {
+          sh """
+              helm upgrade ${appName} ./helm/${appName} \
+                --set-string image.repository=${IMAGE_REPO},image.tag=${IMAGE_TAG} \
+                -f ./helm/values.dev.yml  --debug --install --namespace ${namespace}
+            """
+        }
+      }
+    }
+  }
+}

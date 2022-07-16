@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.env.containerport }}
+      nodePort: {{ .Values.env.nodeport }}
+  selector:
+    app: {{ .Release.Name }}

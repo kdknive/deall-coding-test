@@ -1,0 +1,6 @@
+env:
+  containerport : '6000'
+  nodeport: '32600'
+
+serviceAccount:
+  create: true # True untuk membuat service account sebagai identifikasi dari pod
