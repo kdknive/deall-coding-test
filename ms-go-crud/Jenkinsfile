@@ -8,6 +8,7 @@ pipeline {
       cloud "kubernetes"
       label "jenkins-agent"
       yamlFile "ms-go-crud/jenkins-build-pod.yaml"
+      workspaceVolume persistentVolumeClaimWorkspaceVolume(claimName: 'jenkins-agent-data-pvc', readOnly: false)
     }
   }
 

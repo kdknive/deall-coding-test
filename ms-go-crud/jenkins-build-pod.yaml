@@ -6,10 +6,10 @@ metadata:
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
-  volumes:
-      - name: jenkins-agent-data 
-        persistentVolumeClaim:
-          claimName: jenkins-agent-data-pvc 
+  # volumes:
+  #     - name: jenkins-agent-data 
+  #       persistentVolumeClaim:
+  #         claimName: jenkins-agent-data-pvc 
   containers:
   # - name: gcloud
   #   image: google/cloud-sdk:272.0.0-alpine
@@ -26,6 +26,6 @@ spec:
     command:
     - cat
     tty: true
-    volumeMounts: # Path dari directory yang akan digunakan dan di mount ke PV
-      - name: jenkins-agent-data
-        mountPath:  '/data'
+    # volumeMounts: # Path dari directory yang akan digunakan dan di mount ke PV
+    #   - name: jenkins-agent-data
+    #     mountPath:  '/data'
