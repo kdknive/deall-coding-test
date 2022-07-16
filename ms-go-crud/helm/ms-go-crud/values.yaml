@@ -2,5 +2,9 @@ env:
   containerport : '7000'
   nodeport: '32700'
 
+image:
+  repository: 'kadeka/ms-go-crud'
+  tag: 'latest'
+
 serviceAccount:
   create: true # True untuk membuat service account sebagai identifikasi dari pod
