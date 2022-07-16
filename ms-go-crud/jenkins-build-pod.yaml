@@ -17,7 +17,7 @@ spec:
     command: ['cat']
     tty: true
   - name: helm
-    image: alpine/helm:2.14.0
+    image: alpine/helm:latest
     imagePullPolicy: IfNotPresent
     command:
     - cat
