@@ -6,6 +6,10 @@ metadata:
 spec:
   # Use service account that can deploy to all namespaces
   serviceAccountName: jenkins
+  volumes:
+      - name: jenkins-agent-data 
+        persistentVolumeClaim:
+          claimName: jenkins-agent-data-pvc 
   containers:
   # - name: gcloud
   #   image: google/cloud-sdk:272.0.0-alpine
