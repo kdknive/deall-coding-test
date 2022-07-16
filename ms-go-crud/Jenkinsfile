@@ -14,20 +14,24 @@ pipeline {
   stages {
     stage("Build") {
       steps {
-        container("gcloud") {
+        dir("ms-go-crud") {
+          container("gcloud") {
             sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
+          }
         }
       }
     }
     stage("Deploy to Kubernetes") {
         steps {
-        container("helm") {
-          sh """
-              helm upgrade ${appName} ./helm/${appName} \
-                --set-string image.repository=${params.IMAGE_URL},image.tag=${GIT_COMMIT} \
-                --debug --install --namespace ${namespace}
-            """
-        }
+            dir("ms-go-crud"){
+                container("helm") {
+                    sh """
+                        helm upgrade ${appName} ./helm/${appName} \
+                        --set-string image.repository=${params.IMAGE_URL},image.tag=${GIT_COMMIT} \
+                        --debug --install --namespace ${namespace}
+                    """
+                }
+            }
       }
     }
   }
