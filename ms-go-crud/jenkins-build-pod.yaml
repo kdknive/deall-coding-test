@@ -23,13 +23,18 @@ spec:
     - cat
     tty: true
     volumeMounts: # Path dari directory yang akan digunakan dan di mount ke PV
-          - name: jenkins-agent-data
-            mountPath:  '/data'
-  volumeClaimTemplates:
-  - metadata:
-      name: jenkins-agent-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 5Gi
+      - name: jenkins-agent-data
+        mountPath:  '/data'
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jenkins-agent-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
