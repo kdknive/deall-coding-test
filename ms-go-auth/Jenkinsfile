@@ -1,0 +1,38 @@
+def appName = "ms-go-auth"
+def namespace = "coding-test"
+
+pipeline {
+  agent {
+    kubernetes {
+      // Without cloud, Jenkins will pick the first cloud in the list
+      cloud "kubernetes"
+      label "jenkins-agent"
+      yamlFile "ms-go-auth/jenkins-build-pod.yaml"
+    }
+  }
+
+  stages {
+    stage("Build") {
+      steps {
+        dir("ms-go-auth") {
+          container("gcloud") {
+            sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
+          }
+        }
+      }
+    }
+    stage("Deploy to Kubernetes") {
+        steps {
+            dir("ms-go-auth"){
+                container("helm") {
+                    sh """
+                        helm upgrade ${appName} ./helm/${appName} \
+                        --set-string image.repository=${params.IMAGE_URL},image.tag=${GIT_COMMIT} \
+                        --debug --install --namespace ${namespace}
+                    """
+                }
+            }
+      }
+    }
+  }
+}
