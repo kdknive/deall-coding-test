@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: {{ .Release.Name }} 
-        image: kadeka/ms-go-crud:latest # Mengambil image Bungeecord dari repository docker
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         ports:
         - containerPort: {{ .Values.env.containerport }}
           name: {{ .Release.Name }} 

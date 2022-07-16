@@ -1,3 +1,6 @@
+def appName = "ms-go-crud"
+def namespace = "coding-test"
+
 pipeline {
   agent {
     kubernetes {
@@ -11,28 +14,18 @@ pipeline {
   stages {
     stage("Build") {
       steps {
-        dir("hello-app") {
-          container("gcloud") {
-            // Cheat by using Cloud Build to help us build our container
+        container("gcloud") {
             sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
-          }
         }
       }
     }
-    stage("Development") {
-      when {
-        branch 'develop'
-      }
-      environment {
-        IMAGE_REPO = "gcr.io/${project}/${appName}"
-        IMAGE_TAG = "${env.GIT_COMMIT.substring(0,7)}"
-      }
-      steps {
+    stage("Deploy to Kubernetes") {
+        steps {
         container("helm") {
           sh """
               helm upgrade ${appName} ./helm/${appName} \
-                --set-string image.repository=${IMAGE_REPO},image.tag=${IMAGE_TAG} \
-                -f ./helm/values.dev.yml  --debug --install --namespace ${namespace}
+                --set-string image.repository=${params.IMAGE_URL},image.tag=${GIT_COMMIT} \
+                --debug --install --namespace ${namespace}
             """
         }
       }
