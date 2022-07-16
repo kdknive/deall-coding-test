@@ -8,9 +8,14 @@ spec:
   serviceAccountName: jenkins
   containers:
   - name: gcloud
-    image: gcr.io/cloud-builders/gcloud
-    command: ['cat']
+    image: google/cloud-sdk:272.0.0-alpine
+    command:
+    - cat
     tty: true
+  # - name: gcloud
+  #   image: gcr.io/cloud-builders/gcloud
+  #   command: ['cat']
+  #   tty: true
   - name: helm
     image: alpine/helm:2.14.0
     imagePullPolicy: IfNotPresent
