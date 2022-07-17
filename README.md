@@ -151,3 +151,17 @@ The `/login` and `/auth` endpoint will be handled by `ms-go-auth` microservice w
 When an endpoint require the client to provide a JWT Token, `ms-go-crud` will access the `/auth` endpoint on `ms-go-auth` to authenticate the client. And if `ms-go-auth` responded with Status `200`, the API will respond with the approriate response.
 
 ![REST API Flow Diagram](/rest-api-flow.png)
+
+# CI/CD Pipeline
+
+Here is the diagram of the CI/CD Pipeline used to deploy this REST API. The platform used for this pipeline is GCP with Google Kubernetes Engine (GKE) as the Kubernetes cluster.
+
+Jenkins is used to automate the delivery of the microservices and was deployed on Kubernetes using Helm.
+
+First when a developer pushed some changes to GitHub, it will send a webhook to Jenkins which will then start the building process of the microservice using the Jenkinsfile on the repository.
+
+The Jenkinsfile will then create a Jenkins Agent pod on Kubernetes that will have Google Cloud Build container and Helm container. The Google Cloud Build container will be used to build the Dockerfile of the microservice and then push it to the Artifact Registry on GCP.
+
+After that, the Helm container will use the Helm Chart of the microservice and use the Docker Image previously pushed to the Artifact Registry to finally install the microservice on Kubernetes.
+
+![CI/CD Pipeline](/cicd-pipeline.png)
