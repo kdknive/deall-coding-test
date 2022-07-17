@@ -92,7 +92,8 @@ Below are the detailed information of the REST API's endpoints to be tested usin
     
 ```json
 {
-    "name": "example edited",
+    "role": "user", //only applicable for Admins
+    "name": "example edited", 
     "username": "example",
     "email": "example@gmail.com",
     "password": "example"
@@ -100,7 +101,7 @@ Below are the detailed information of the REST API's endpoints to be tested usin
 ```
 
 </td>
-<td> Update user data <br> Admin's JWT Token can update any user data <br> User's JWT Token can only update their own data <br> Can't update if the username and email is the same as other users </td>
+<td> Update user data <br> Admin's JWT Token can update any user data <br> User's JWT Token can only update their own data <br> Can't update if the username and email is the same as other users <br> Updating the role is only applicable for Admins, the API won't read the "role" key if the JWT Token belongs to a user </td>
 </tr>
 <tr>
 <td> DELETE </td>
